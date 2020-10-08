@@ -379,7 +379,7 @@ static int v4l2_reqbufs_mmap(struct v4l2_device *dev, int nbufs)
         }
 
         dev->mem[i].length = dev->mem[i].buf.length;
-        printf("V4L2: Buffer %u mapped at address %p, length %d.\n", i, dev->mem[i].start, dev->mem[i].length);
+        printf("V4L2: Buffer %u mapped at address %p, length %lu.\n", i, dev->mem[i].start, dev->mem[i].length);
     }
 
     dev->nbufs = req.count;
