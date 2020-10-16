@@ -1337,8 +1337,9 @@ static int uvc_handle_streamon_event(struct uvc_device *dev)
     if (dev->run_standalone) {
         uvc_video_stream(dev, 1);
         dev->first_buffer_queued = 1;
-        dev->is_streaming = 1;
     }
+
+    dev->is_streaming = 1;
 
     return 0;
 
@@ -2312,7 +2313,11 @@ int main(int argc, char *argv[])
 
         if (!dummy_data_gen_mode && !mjpeg_image) {
             nfds = max(vdev->v4l2_fd, udev->uvc_fd);
-            ret = select(nfds + 1, &fdsv, &dfds, &efds, &tv);
+            if (udev->is_streaming || vdev->is_streaming) {
+                ret = select(nfds + 1, &fdsv, &dfds, &efds, &tv);
+            } else {
+                ret = select(nfds + 1, NULL, NULL, &efds, &tv);
+            }
         } else {
             ret = select(udev->uvc_fd + 1, NULL, &dfds, &efds, NULL);
         }
@@ -2326,6 +2331,8 @@ int main(int argc, char *argv[])
         }
 
         if (0 == ret) {
+            if (!(udev->is_streaming && vdev->is_streaming))
+                continue;
             printf("select timeout\n");
             break;
         }
