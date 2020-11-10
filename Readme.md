@@ -1,3 +1,9 @@
+WARNING: This repository is for archival purposes only. It is no longer used by showmewebcam as upstream.
+===
+
+Please use https://github.com/peterbay/uvc-gadget for your upstream instead.
+
+
 ## uvc-gadget
 
 **Upstream project [uvc-gadget](http://git.ideasonboard.org/uvc-gadget.git) has been updated and continuous maintenance**
